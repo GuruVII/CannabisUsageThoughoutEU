@@ -1,91 +1,129 @@
 <template>
-    <div id="app">
-        <vue-chart
-            chart-type="GeoChart"
-            :columns="columns"
-            :rows="rows"
-            :options="options"
-></vue-chart>
+    <div id="map">
+        <vue-chart chart-type="GeoChart" :columns="columns" :rows="rows" :options="options"></vue-chart>
+        <vue-slider v-model.number="year" :min="inputStyle.min" :max="inputStyle.max" :width="options.width" :piecewise="inputStyle.piecewise" :piecewise-style="inputStyle.piecewiseStyle" :tooltip="options.tooltip"></vue-slider>
     </div>
 </template>
 
 <script>
     import allData from './mixins/allData';
+    import vueSlider from 'vue-slider-component'
+
     export default {
-        name: 'app',
+        name: 'map',
         data() {
             return {
-                msg: 'Welcome to Your Vue.js App',
+                year: 1950,
                 columns: [{
                     'type': 'string',
-                    'label': 'Country'
+                    'label': 'Država'
                 }, {
                     'type': 'number',
-                    'label': 'Popularity'
+                    'label': 'Zakonodaja'
                 }, {
                     'type': 'string',
-                    'role': 'tooltip'
+                    'role': 'tooltip',
                 }],
-                rows: [
-                    ['Austria', 0, 'Nejasna zakonodaja'],
-                    ['Belgium', 10, 'Prepovedano'],
-                    ['Bulgaria', 20, 'Dekriminalizirano oz. Prepovedano a se zakon ne izvršuje'],
-                    ['Croatia', 40, 'Popolna legalizacija'],
-                    ['Cyprus', 0, 'Nejasna zakonodaja'],
-                    ['Czechia', 0, 'Nejasna zakonodaja'],
-                    ['Denmark', 40, 'Popolna legalizacija'],
-                    ['Estonia', 20, 'Dekriminalizirano oz. Prepovedano a se zakon ne izvršuje'],
-                    ['Finland', 0, 'Nejasna zakonodaja'],
-                    ['France', 10, 'Prepovedano'],
-                    ['Germany', 0, 'Nejasna zakonodaja'],
-                    ['Greece', 20, 'Dekriminalizirano oz. Prepovedano a se zakon ne izvršuje'],
-                    ['Hungary', 0, 'Nejasna zakonodaja'],
-                    ['Ireland', 10, 'Prepovedano'],
-                    ['Italy', 0, 'Nejasna zakonodaja'],
-                    ['Latvia', 20, 'Dekriminalizirano oz. Prepovedano a se zakon ne izvršuje'],
-                    ['Lithuania', 20, 'Dekriminalizirano oz. Prepovedano a se zakon ne izvršuje'],
-                    ['Luxembourg', 10, 'Prepovedano'],
-                    ['Malta', 0, 'Nejasna zakonodaja'],
-                    ['Netherlands', 0, 'Nejasna zakonodaja'],
-                    ['Poland', 0, 'Nejasna zakonodaja'],
-                    ['Portugal', 0, 'Nejasna zakonodaja'],
-                    ['Romania', 10, 'Prepovedano'],
-                    ['Slovakia', 0, 'Nejasna zakonodaja'],
-                    ['Slovenia', 40, 'Popolna legalizacija'],
-                    ['Spain', 10, 'Prepovedano'],
-                    ['Sweden', 10, 'Prepovedano'],
-                    ['United Kingdom', 20, 'Dekriminalizirano oz. Prepovedano a se zakon ne izvršuje'],
-                    ['China', 0, 'fake data, so that the colors are correct'],
-                    ['Taiwan', 10, 'fake data, so that the colors are correct'],
-                    ['Thailand', 20, 'fake data, so that the colors are correct'],
-                    ['Australia', 30, 'fake data, so that the colors are correct'],
-                    ['Kuwait', 40, 'fake data, so that the colors are correct']
-                ],
                 options: {
                     region: 150,
-                    title: 'Popularity by Countries',
-                    colorAxis: {colors: ['#d9d9d9', '#ff0000', '#ffcc00', 'black', '#99cc66', '#00b050']},
-                    width: 900,
-                    height: 500,
-                    legend: 'none'
-                }
+                    title: 'Zakonodaja glede konoplje v EU (brez Cipra)',
+                    colorAxis: {
+                        values: [0, 10, 20, 30, 40],
+                        colors: ['#d9d9d9', '#ff0000', '#ffcc00', '#99cc66', '#00b050'] },
+                    width: 700,
+                    height: 420,
+                    legend: 'none',
+                },
+                inputStyle: {
+                    min: 1950,
+                    max: 2017,
+                    piecewise: true,
+                    piecewiseStyle: {
+                        'backgroundColor': '#fff',
+                        'width': '1px',
+                    },
+                },
+            }
+        },
+        computed: {
+            rows: function () {
+                return [...this.allData[this.year]]
+            }
+        },
+        methods: {
+            responsiveMap: function () {
+                    if (screen.width >= 1200 ){
+                        this.options.width = 700;
+                        this.options.height = 420;
+                    } else if (screen.width >= 991 ) {
+                        this.options.width = 616;
+                        this.options.height = 370;
+                    } else if (screen.width > 750){
+                        this.options.width = 700;
+                        this.options.height = 420;
+                    } else {
+                        this.options.width = 300;
+                        this.options.height = 180;
+                    }
             }
         },
         mixins: [allData],
-    }
+        components: {
+            vueSlider
+        },
+        mounted () {
+        this.responsiveMap()
+        window.addEventListener("resize", () => {
+            this.responsiveMap();
+        });
+        
+    },
+}
 
 </script>
 
 <style lang="scss">
-    #app {
+    @mixin flex-box($flex-flow) {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-flex-flow: $flex-flow;
+        flex-flow: $flex-flow;
+    }
+    @mixin justify-content($position) {
+        -webkit-justify-content: $position;
+        justify-content: $position;
+    }
+    @mixin align-items($position) {
+        -webkit-align-items: $position;
+        align-items: $position;
+    }
+    #map {
+        @include flex-box (column wrap);
+        @include justify-content (center);
+        @include align-items (center);
         font-family: 'Avenir', Helvetica, Arial, sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         text-align: center;
         color: #2c3e50;
         margin-top: 60px;
+        .vue-slider-component {
+            .vue-slider-process{
+                background-color: #f78f35;
+            }
+            .vue-slider-tooltip {
+                background-color: #fff;
+                border-color: #f78f35;
+                color: black;
+            }
+            .vue-slider-dot {
+                background-color: #fff;
+                border: 1px solid  #f78f35;
+            }
+        }
     }
-
     h1,
     h2 {
         font-weight: normal;
@@ -95,14 +133,77 @@
         list-style-type: none;
         padding: 0;
     }
-
+    // this is a workaround that adds numbers to the slider input
     li {
-        display: inline-block;
-        margin: 0 10px;
+        &:nth-child(5n){
+            span{
+                background-color: grey !important;
+            }            
+        }
+        &:nth-child(10n){
+            span{
+                background-color: black !important;
+                width: 2px;
+            }            
+        }
+        &:nth-child(1){
+           &:after {
+            font-size: 0.5em;
+            content: "1950";
+           }
+        }
+        &:nth-child(9){
+           &:after {
+            font-size: 0.5em;
+            content: "1960";
+            margin-left: 80%;
+           }
+        }
+        &:nth-child(19){
+           &:after {
+            font-size: 0.5em;
+            content: "1970";
+            text-align: center;
+            margin-left: 80%;
+           }
+        }
+        &:nth-child(29){
+           &:after {
+            font-size: 0.5em;
+            content: "1980";
+            margin-left: 80%;
+           }
+        }
+        &:nth-child(39){
+           &:after {
+            font-size: 0.5em;
+            content: "1990";
+            margin-left: 80%;
+           }
+        }
+        &:nth-child(49){
+           &:after {
+            font-size: 0.5em;
+            content: "2000";
+            margin-left: 80%;
+           }
+        }
+        &:nth-child(59){
+           &:after {
+            font-size: 0.5em;
+            content: "2010";
+            margin-left: 80%;
+           }
+        }
+        &:last-child {
+            &:after {
+            font-size: 0.5em;
+            content: "2017";
+           }
+        }
     }
 
     a {
         color: #42b983;
     }
-
 </style>

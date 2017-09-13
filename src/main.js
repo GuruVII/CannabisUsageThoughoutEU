@@ -5,6 +5,6 @@ import VueCharts from 'Vue-charts'
 Vue.use(VueCharts)
 
 new Vue({
-  el: '#app',
+  el: '#map',
   render: h => h(App)
 })
