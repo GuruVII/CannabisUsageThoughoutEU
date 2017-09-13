@@ -2,7 +2,7 @@
 
 > A small project that shows laws concerning marijuana in the EU (except Cyprus) using VueJS and Google charts
 
-#Disclaimer
+# Disclaimer
 This app was made as a favour and is not meant as a political statmenent by the author
 
 ## Build Setup
