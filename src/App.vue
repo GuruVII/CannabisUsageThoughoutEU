@@ -113,7 +113,6 @@
         -moz-osx-font-smoothing: grayscale;
         text-align: center;
         color: #2c3e50;
-        margin-top: 60px;
         .vue-slider-component {
             .vue-slider-process{
                 background-color: #f78f35;
