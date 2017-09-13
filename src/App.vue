@@ -1,7 +1,7 @@
 <template>
     <div id="map">
         <vue-chart chart-type="GeoChart" :columns="columns" :rows="rows" :options="options"></vue-chart>
-        <vue-slider v-model.number="year" :min="inputStyle.min" :max="inputStyle.max" :width="options.width" :piecewise="inputStyle.piecewise" :piecewise-style="inputStyle.piecewiseStyle" :tooltip="options.tooltip"></vue-slider>
+        <vue-slider v-model.number="year" v-if="sliderWidth != 0" :min="inputStyle.min" :max="inputStyle.max" :width="sliderWidth" :piecewise="inputStyle.piecewise" :piecewise-style="inputStyle.piecewiseStyle" :tooltip="options.tooltip"></vue-slider>
     </div>
 </template>
 
@@ -13,6 +13,7 @@
         name: 'map',
         data() {
             return {
+                sliderWidth: 0,
                 year: 1950,
                 columns: [{
                     'type': 'string',
@@ -48,20 +49,24 @@
         computed: {
             rows: function () {
                 return [...this.allData[this.year]]
-            }
+            },
         },
         methods: {
             responsiveMap: function () {
                     if (screen.width >= 1200 ){
+                        this.sliderWidth = 700;
                         this.options.width = 700;
                         this.options.height = 420;
                     } else if (screen.width >= 991 ) {
+                        this.sliderWidth = 616;
                         this.options.width = 616;
                         this.options.height = 370;
                     } else if (screen.width > 750){
+                        this.sliderWidth = 700;
                         this.options.width = 700;
                         this.options.height = 420;
                     } else {
+                        this.sliderWidth = 300;
                         this.options.width = 300;
                         this.options.height = 180;
                     }
@@ -157,49 +162,67 @@
             font-size: 0.5em;
             content: "1960";
             margin-left: 80%;
+                @media(max-width:750px) {
+                    margin-left: -10%;
+                }
            }
         }
         &:nth-child(19){
-           &:after {
-            font-size: 0.5em;
-            content: "1970";
-            text-align: center;
-            margin-left: 80%;
-           }
+            &:after {
+                font-size: 0.5em;
+                content: "1970";
+                text-align: center;
+                margin-left: 80%;
+                @media(max-width:750px) {
+                        margin-left: -10%;
+                }
+            }
         }
         &:nth-child(29){
            &:after {
             font-size: 0.5em;
             content: "1980";
             margin-left: 80%;
+            @media(max-width:750px) {
+                    margin-left: -10%;
+                }
            }
         }
         &:nth-child(39){
-           &:after {
-            font-size: 0.5em;
-            content: "1990";
-            margin-left: 80%;
-           }
+            &:after {
+                font-size: 0.5em;
+                content: "1990";
+                margin-left: 80%;
+                @media(max-width:750px) {
+                    margin-left: -10%;
+                }
+            }
         }
         &:nth-child(49){
-           &:after {
-            font-size: 0.5em;
-            content: "2000";
-            margin-left: 80%;
-           }
+            &:after {
+                font-size: 0.5em;
+                content: "2000";
+                margin-left: 80%;
+                @media(max-width:750px) {
+                    margin-left: -10%;
+                }
+            }
         }
         &:nth-child(59){
-           &:after {
-            font-size: 0.5em;
-            content: "2010";
-            margin-left: 80%;
-           }
+            &:after {
+                font-size: 0.5em;
+                content: "2010";
+                margin-left: 80%;
+                @media(max-width:750px) {
+                    margin-left: -10%;
+                }
+            }
         }
         &:last-child {
             &:after {
-            font-size: 0.5em;
-            content: "2017";
-           }
+                font-size: 0.5em;
+                content: "2017";
+            }
         }
     }
 
