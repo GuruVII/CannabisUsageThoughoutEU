@@ -1,4 +1,4 @@
-# cannabismap
+# Cannabis Laws Thoughout the EU
 
 > A small project that shows laws concerning marijuana in the EU (except Cyprus) using VueJS and Google charts
 
@@ -19,7 +19,6 @@ npm run build
 ```
 
 For detailed explanation on how things work, consult the [docs for vue-loader](http://vuejs.github.io/vue-loader).
-# CannabisUsageThoughoutEU
 
-#Demo
+# Demo
 [Demo](https://front-end.guru/canabis-map/)
