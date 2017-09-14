@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "vue": "^2.3.3",
+    "vue-in-viewport-mixin": "^1.0.3",
     "vue-slider-component": "^2.4.1"
   },
   "devDependencies": {

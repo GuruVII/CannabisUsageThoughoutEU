@@ -1,20 +1,27 @@
 <template>
     <div id="map">
         <vue-chart chart-type="GeoChart" :columns="columns" :rows="rows" :options="options"></vue-chart>
-        <vue-slider v-model.number="year" v-if="sliderWidth != 0" :min="inputStyle.min" :max="inputStyle.max" :width="sliderWidth" :piecewise="inputStyle.piecewise" :piecewise-style="inputStyle.piecewiseStyle" :tooltip="options.tooltip"></vue-slider>
+        <vue-slider @click.native="inputClicked = true" v-model.number="year" v-if="sliderWidth != 0" :min="inputStyle.min" :max="inputStyle.max" :width="sliderWidth" :piecewise="inputStyle.piecewise" :piecewise-style="inputStyle.piecewiseStyle" :tooltip="options.tooltip"></vue-slider>
     </div>
 </template>
 
 <script>
     import allData from './mixins/allData';
-    import vueSlider from 'vue-slider-component'
+    import vueSlider from 'vue-slider-component';
+    import inViewport from 'vue-in-viewport-mixin';
 
     export default {
         name: 'map',
+        mixins: [allData, inViewport],
+        components: {
+            vueSlider
+        },
         data() {
             return {
                 sliderWidth: 0,
                 year: 1950,
+                started: false,
+                inputClicked: false,
                 columns: [{
                     'type': 'string',
                     'label': 'Država'
@@ -29,8 +36,8 @@
                     region: 150,
                     title: 'Zakonodaja glede konoplje v EU (brez Cipra)',
                     colorAxis: {
-                        values: [0, 10, 20, 30, 40],
-                        colors: ['#d9d9d9', '#ff0000', '#ffcc00', '#99cc66', '#00b050'] },
+                        values: [0, 10, 20, 30, 40], //unknown, forbidden, forbidden, but not enforced, medical use, allowed
+                        colors: ['#d9d9d9', '#ff0000', '#ffc400', '#ffff00', '#28d761'] },
                     width: 700,
                     height: 420,
                     legend: 'none',
@@ -52,7 +59,9 @@
             },
         },
         methods: {
-            responsiveMap: function () {
+            responsiveMap: function () { 
+            //this gives the page some responsivness. This is done becuase I can't ensure that years on sliders are aligned and so that
+            //the map doesn't become too small
                     if (screen.width >= 1200 ){
                         this.sliderWidth = 700;
                         this.options.width = 700;
@@ -70,17 +79,37 @@
                         this.options.width = 300;
                         this.options.height = 180;
                     }
+            },
+            autoplay: function () {
+                setTimeout( () => {
+                    if (this.inputClicked == false) {
+                        this.year += 1;
+                        if (this.inViewport.fully == true && this.year < this.inputStyle.max) {
+                            this.autoplay();
+                        }
+                    }
+
+                }, 1000 )
+
+
             }
         },
-        mixins: [allData],
-        components: {
-            vueSlider
+        watch: {
+            'inViewport.fully': function (visible) { //
+                if (this.started == false){
+                    console.log("test")
+                    this.autoplay();
+                }
+                this.started = true;
+
+            },
         },
         mounted () {
         this.responsiveMap()
         window.addEventListener("resize", () => {
             this.responsiveMap();
         });
+
         
     },
 }
@@ -113,6 +142,7 @@
         -moz-osx-font-smoothing: grayscale;
         text-align: center;
         color: #2c3e50;
+        width: 100%;
         .vue-slider-component {
             .vue-slider-process{
                 background-color: #f78f35;
