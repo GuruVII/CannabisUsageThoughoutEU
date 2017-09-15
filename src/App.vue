@@ -70,10 +70,14 @@
                         this.sliderWidth = 616;
                         this.options.width = 616;
                         this.options.height = 370;
-                    } else if (screen.width > 750){
+                    } else if (screen.width > 750) {
                         this.sliderWidth = 700;
                         this.options.width = 700;
                         this.options.height = 420;
+                    } else if ( screen.width > 320 ) {
+                        this.options.width = screen.width - 20;
+                        this.options.height = screen.width * 0.6;
+                        this.sliderWidth = this.options.width;
                     } else {
                         this.sliderWidth = 300;
                         this.options.width = 300;
@@ -192,6 +196,9 @@
             content: "1960";
             margin-left: 80%;
                 @media(max-width:750px) {
+                    margin-left: 50%;
+                }
+                @media(max-width:450px) {
                     margin-left: -10%;
                 }
            }
@@ -212,7 +219,10 @@
             font-size: 0.5em;
             content: "1980";
             margin-left: 80%;
-            @media(max-width:750px) {
+                            @media(max-width:750px) {
+                    margin-left: 50%;
+                }
+                @media(max-width:450px) {
                     margin-left: -10%;
                 }
            }
@@ -222,7 +232,10 @@
                 font-size: 0.5em;
                 content: "1990";
                 margin-left: 80%;
-                @media(max-width:750px) {
+                                @media(max-width:750px) {
+                    margin-left: 50%;
+                }
+                @media(max-width:450px) {
                     margin-left: -10%;
                 }
             }
@@ -232,7 +245,10 @@
                 font-size: 0.5em;
                 content: "2000";
                 margin-left: 80%;
-                @media(max-width:750px) {
+                                @media(max-width:750px) {
+                    margin-left: 50%;
+                }
+                @media(max-width:450px) {
                     margin-left: -10%;
                 }
             }
@@ -242,7 +258,10 @@
                 font-size: 0.5em;
                 content: "2010";
                 margin-left: 80%;
-                @media(max-width:750px) {
+                                @media(max-width:750px) {
+                    margin-left: 50%;
+                }
+                @media(max-width:450px) {
                     margin-left: -10%;
                 }
             }
@@ -251,6 +270,9 @@
             &:after {
                 font-size: 0.5em;
                 content: "2017";
+                @media(max-width:750px) {
+                    margin-left: -150%;
+                }
             }
         }
     }
