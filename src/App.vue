@@ -24,10 +24,10 @@
                 inputClicked: false,
                 columns: [{
                     'type': 'string',
-                    'label': 'Država'
+                    'label': 'Country'
                 }, {
                     'type': 'number',
-                    'label': 'Zakonodaja'
+                    'label': 'Legislation'
                 }, {
                     'type': 'string',
                     'role': 'tooltip',
@@ -101,7 +101,6 @@
         watch: {
             'inViewport.fully': function (visible) { //
                 if (this.started == false){
-                    console.log("test")
                     this.autoplay();
                 }
                 this.started = true;
