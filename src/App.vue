@@ -6,7 +6,7 @@
 </template>
 
 <script>
-    import allData from './mixins/allData';
+    import allData from './mixins/allDataEng';
     import vueSlider from 'vue-slider-component';
     import inViewport from 'vue-in-viewport-mixin';
 
